@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q4 – 소비/저축 가치 테스트</title>
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+
+  <!-- Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/q.css" />
+</head>
+
+<body>
+  <div class="q-wrap">
+
+    <!-- 진행도 -->
+    <div class="q-progress">4 / 5</div>
+
+  <img 
+  src="assets/q4.png" 
+  alt="Q4 Illustration" 
+  class="q-illust" 
+  data-rotate="3"
+/>
+
+    <!-- 질문 -->
+     <h2 class="q-title typing" data-text="친구가 “요즘 돈 너무 안 모인다…”<br>하소연할 때, 나는 속으로 이렇게 생각한다."></h2>
+
+    <!-- 선택지 -->
+    <div class="q-options">
+
+      <button class="q-btn" data-score="economic">
+       “수입보다 지출 관리가 더 중요하긴 하지.”
+      </button>
+
+      <button class="q-btn" data-score="relax">
+      “그래도 지금 행복하게 사는 게 더 중요한 거 아닐까?”
+      </button>
+
+      <button class="q-btn" data-score="mind">
+      “그래, 돈이 있어야 믿음직한 어른처럼 살 수 있지.” 
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+    const optionButtons = document.querySelectorAll(".q-btn");
+
+    optionButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+
+        // 선택 효과
+        btn.classList.add("selected");
+
+        // 점수 저장
+        localStorage.setItem("q4", btn.dataset.score);
+
+        // 다음 페이지로 이동
+        setTimeout(() => {
+          window.location.href = "q5.html";
+        }, 300);
+      });
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+  const illust = document.querySelector(".q-illust");
+  const rotation = illust.dataset.rotate || "0";
+  illust.style.setProperty("--rotate", rotation + "deg");
+  requestAnimationFrame(() => {
+    illust.classList.add("active");
+  });
+
+  const title = document.querySelector(".q-title.typing");
+  const fullText = title.dataset.text;
+  let idx = 0;
+  let displayText = "";
+
+  title.innerHTML = "";
+  title.style.visibility = "visible";
+
+
+// 질문 타이핑 효과
+function typeNext() {
+  if (idx < fullText.length) {
+    displayText += fullText[idx];
+    title.innerHTML = displayText;
+    idx++;
+    setTimeout(typeNext, 60);
+  } else {
+    // 🎯 선택지 등장 트리거
+    document.querySelector(".q-options").classList.add("show");
+  }
+}
+
+
+  typeNext();
+});
+  </script>
+</body>
+</html>

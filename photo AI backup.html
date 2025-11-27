@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>몽타주 캐릭터 촬영 | Montage</title>
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f1f1f1;
+      font-family: Pretendard, -apple-system, system-ui, sans-serif;
+      color: #40444c;
+    }
+
+    .photo-wrap {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* 타이틀 영역 */
+    .photo-title {
+      text-align: center;
+    }
+
+    .photo-title h2 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #40444c;
+    }
+
+    .photo-title p {
+      margin-top: 0.6rem;
+      font-size: 1.05rem;
+      color: #7c7c7c;
+    }
+
+    /* 카메라 프레임 */
+    .camera-frame {
+      width: 900px;
+      max-width: 90vw;
+      height: 520px;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1.5px solid #dcdcdc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    video,
+    #preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #preview {
+      display: none; /* 촬영 전엔 숨김 */
+    }
+
+    /* 카메라 프레임 내부 촬영 안내 문구 */
+    #shootMessage {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #ffffff;
+      /* background: rgba(255, 255, 255, 0.7); */
+      padding: 6px 16px;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      display: none;
+      white-space: nowrap;
+    }
+
+    /* 버튼 영역 */
+    .photo-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      min-height: 64px;
+    }
+
+    .btn-base {
+      min-width: 180px;
+      height: 64px;
+      padding: 0 28px;
+      border: none;
+      border-radius: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.18s;
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: Pretendard, sans-serif;
+    }
+
+    /* 촬영하기 버튼 (아이콘 + 카운트다운 텍스트) */
+    #shootBtn {
+      background: #33c37e;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #shootBtn:hover {
+      background: #2eac71;
+    }
+
+    #shootIcon {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    /* 3-2-1 카운트다운 텍스트 */
+    #countdownText {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    /* 다시 찍기 버튼 */
+    #retakeBtn {
+      background: #c4c4c4;
+      color: #333;
+      display: none; /* 처음에는 숨김 */
+    }
+
+    #retakeBtn:hover {
+      background: #b0b0b0;
+    }
+
+    /* 다음으로 버튼 */
+    #nextBtn {
+      background: #40444c;
+      color: #fff;
+      display: none; /* 처음에는 숨김 */
+    }
+
+    #nextBtn:hover {
+      background: #30333a;
+    }
+
+    #shootBtn:disabled,
+    #retakeBtn:disabled,
+    #nextBtn:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    /* 상태 텍스트 (에러 표시용, 지금은 거의 안 씀) */
+    .status {
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      color: #e04848;
+      min-height: 1.2em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="photo-wrap">
+    <!-- 타이틀 -->
+    <div class="photo-title">
+      <h2>몽타주 캐릭터를 만들어보아요</h2>
+      <p>나만의 캐릭터를 결과지에서 확인할 수 있어요</p>
+    </div>
+
+    <!-- 카메라 / 미리보기 영역 -->
+    <div class="camera-frame">
+      <video id="camera" autoplay playsinline></video>
+      <img id="preview" alt="촬영된 사진 미리보기" />
+
+      <!-- 카메라 프레임 안, 하단 안내 문구 -->
+      <div id="shootMessage"></div>
+    </div>
+
+    <!-- 버튼들 -->
+    <div class="photo-buttons">
+      <!-- 촬영하기: SVG 아이콘 + 카운트다운 텍스트 -->
+      <button class="btn-base" id="shootBtn" type="button">
+        <img id="shootIcon" src="assets/icon-camera.svg" alt="촬영하기" />
+        <span id="countdownText"></span>
+      </button>
+
+      <!-- 촬영 후 노출 -->
+      <button class="btn-base" id="retakeBtn" type="button">다시 찍기</button>
+      <button class="btn-base" id="nextBtn" type="button">다음으로</button>
+    </div>
+
+    <!-- 에러 메세지 전용 -->
+    <p class="status" id="status"></p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById("camera");
+      const preview = document.getElementById("preview");
+      const shootBtn = document.getElementById("shootBtn");
+      const shootIcon = document.getElementById("shootIcon");
+      const countdownText = document.getElementById("countdownText");
+      const retakeBtn = document.getElementById("retakeBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const statusEl = document.getElementById("status");
+      const shootMessage = document.getElementById("shootMessage");
+
+      let streamRef = null;
+      let capturedBlob = null;
+      let countdownTimer = null;
+
+      // 카메라 시작
+      async function startCamera() {
+        try {
+          statusEl.textContent = "";
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          streamRef = stream;
+          video.srcObject = stream;
+          await video.play();
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = "카메라를 켤 수 없습니다. 권한 설정을 확인해 주세요.";
+        }
+      }
+
+      // 카메라 정지
+      function stopCamera() {
+        if (streamRef) {
+          streamRef.getTracks().forEach((t) => t.stop());
+          streamRef = null;
+        }
+        video.srcObject = null;
+      }
+
+      // 페이지 진입 시 카메라 켜기
+      startCamera();
+
+      // 카운트다운 UI 리셋
+      function resetCountdownVisual() {
+        countdownText.style.display = "none";
+        countdownText.textContent = "";
+        shootIcon.style.display = "block";
+        shootMessage.style.display = "none";
+        shootMessage.textContent = "";
+      }
+
+      // 실제 캡처 동작
+      async function captureFrame() {
+        if (!video.videoWidth || !video.videoHeight) {
+          statusEl.textContent = "카메라 준비 중입니다. 잠시 후 다시 시도해 주세요.";
+          resetCountdownVisual();
+          shootBtn.disabled = false;
+          return;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        capturedBlob = await new Promise((resolve) =>
+          canvas.toBlob(resolve, "image/png", 0.95)
+        );
+
+        if (!capturedBlob) {
+          statusEl.textContent = "사진을 캡처하지 못했어요. 다시 시도해 주세요.";
+          resetCountdownVisual();
+          shootBtn.disabled = false;
+          return;
+        }
+
+        const url = URL.createObjectURL(capturedBlob);
+        preview.src = url;
+        preview.style.display = "block";
+        video.style.display = "none";
+
+        shootBtn.style.display = "none";
+        retakeBtn.style.display = "inline-flex";
+        nextBtn.style.display = "inline-flex";
+
+        stopCamera();
+        resetCountdownVisual();
+        shootBtn.disabled = false;
+      }
+
+      // 📸 촬영 버튼 클릭 → 카운트다운 후 캡처
+      shootBtn.addEventListener("click", () => {
+        if (countdownTimer) return; // 이미 카운트 중이면 무시
+
+        shootBtn.disabled = true;
+        statusEl.textContent = "";
+
+        let count = 5; // 👉 네가 5초로 바꾼 거 여기서 숫자만 조정하면 됨
+
+        shootIcon.style.display = "none";
+        countdownText.style.display = "flex";
+        countdownText.textContent = count;
+
+        shootMessage.style.display = "block";
+        shootMessage.textContent = "5초 후에 촬영됩니다. 준비해 주세요!";
+
+        countdownTimer = setInterval(() => {
+          count -= 1;
+
+          if (count <= 0) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+
+            shootMessage.style.display = "none";
+            shootMessage.textContent = "";
+
+            countdownText.textContent = "📷";
+
+            setTimeout(() => {
+              captureFrame();
+            }, 200);
+          } else {
+            countdownText.textContent = count;
+          }
+        }, 1000);
+      });
+
+      // ♻️ 다시 찍기
+      retakeBtn.addEventListener("click", () => {
+        capturedBlob = null;
+        preview.style.display = "none";
+        video.style.display = "block";
+
+        shootBtn.style.display = "inline-flex";
+        retakeBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        statusEl.textContent = "";
+
+        resetCountdownVisual();
+        shootBtn.disabled = false;
+
+        startCamera();
+      });
+
+      // ➡️ 다음으로: 지금은 백엔드 무시하고 Q1으로 바로 이동
+      nextBtn.addEventListener("click", () => {
+        // 나중에 여기 안에 fetch 로직 다시 넣으면 됨
+        window.location.href = "q1.html"; // Q1 페이지 파일 이름에 맞게 수정
+      });
+
+      // 페이지 떠날 때 카메라/타이머 정리
+      window.addEventListener("beforeunload", () => {
+        if (countdownTimer) {
+          clearInterval(countdownTimer);
+        }
+        stopCamera();
+      });
+    });
+  </script>
+</body>
+</html>

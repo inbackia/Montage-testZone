@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Montage – 성향 분석중</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f1f1f1;
+      font-family: Pretendard, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+    }
+    .loading-name {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #40444c;
+      margin-bottom: 1.4rem;
+      line-height: 1.6;
+    }
+    .loading-illust {
+      width: 440px;
+      margin-bottom: 0.4rem;
+    }
+    .progress-bar {
+      width: 320px;
+      height: 20px;
+      background: #ffffff;
+      border: 1px solid #dcdcdc;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.4rem;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #33c37e;
+      transition: width 3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="loading-name">
+    <span id="userName">이름</span>&nbsp;님의<br>성향을 분석 중이에요
+  </div>
+
+  <img src="assets/loading-illust.png" class="loading-illust" alt="loading">
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <script>
+    // 사용자 이름 출력
+    const savedName = localStorage.getItem("userName") || "사용자";
+    document.getElementById("userName").textContent = savedName;
+
+    // 프로그레스바
+    setTimeout(() => {
+      document.getElementById("progressFill").style.width = "100%";
+    }, 200);
+
+    // 결과 계산 로직
+    function calculateResult() {
+      const scores = {
+        economic: 0,
+        relax: 0,
+        mind: 0,
+      };
+
+      for (let i = 1; i <= 5; i++) {
+        const key = localStorage.getItem("q" + i);
+        if (key) scores[key]++;
+      }
+
+      const { economic, relax, mind } = scores;
+
+      // 복합 유형 (우선순위 있음)
+      if (economic === 3 && relax === 2) return "result-type4.html"; // 균형잡힌 현실감각러
+      if (relax === 3 && mind === 2) return "result-type5.html";     // 따뜻한 실천가
+      if (mind === 3 && economic === 2) return "result-type6.html";  // 책임있는 안정추구형
+
+      // 단일 유형
+      if (economic >= 3) return "result-type1.html"; // 실용주의자
+      if (relax >= 3) return "result-type2.html";    // 감성 소비가
+      if (mind >= 3) return "result-type3.html";     // 가치 실천가
+
+      return "result-type1.html"; // 기본값 (안정형 저축가)
+    }
+
+    // 3.3초 후 결과 페이지로 이동
+    setTimeout(() => {
+      const nextPage = calculateResult();
+      window.location.href = nextPage;
+    }, 3300);
+  </script>
+</body>
+</html>

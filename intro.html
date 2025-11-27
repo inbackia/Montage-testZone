@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Montage – Intro</title>
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+
+  <!-- Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/intro.css" />
+</head>
+
+<body>
+  <div class="intro">
+
+    <!-- 배경 카드 3개 -->
+    <div class="intro-item"></div>
+    <div class="intro-child"></div>
+    <div class="intro-inner"></div>
+
+    <!-- 중앙 콘텐츠 -->
+    <div class="wrap">
+      <img src="assets/logo.svg" alt="Montage" class="brand-logo-icon">
+
+      <div class="middle-wrap">
+        <div class="title-papra-wrap">
+
+          <div class="title-wrap">
+            <b class="introtitleen">Financial Personality Test</b>
+            <b class="introtitle">소비·저축 성향 테스트</b>
+          </div>
+
+          <div class="para-wrap">
+            <div class="para1">
+              우리는 매일 돈을 쓰고, 또 모으며<br>
+              자신만의 방식으로 삶의 균형을 만들어갑니다.
+            </div>
+            <!-- <br> -->
+            <div class="para2">
+              소비와 저축은 단순한 숫자가 아니라<br>
+              당신이 중요하게 여기는 ‘가치’의 표현이에요.<br>
+              내 안의 ‘소비 습관의 이유’를 발견해보세요.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="start-btn" id="startBtn">
+          <b class="btn-text">나의 가치 성향은?</b>
+        </div>
+      </div>
+
+      <b class="bottom-brandbottom">Today’s spend,<br>tomorrow’s vision</b>
+    </div>
+  </div>
+
+  <!-- 전환 애니메이션 스크립트 -->
+<script>
+  const startBtn = document.getElementById("startBtn");
+  const intro = document.querySelector(".intro");
+
+  startBtn.addEventListener("click", () => {
+    // 중복 클릭 방지
+    startBtn.style.pointerEvents = "none";
+
+    // 1단계: 중앙 컨텐츠 먼저 사라지기
+    intro.classList.add("intro-exit-content");
+
+    // 2단계: 조금 있다가 카드들 날리기
+    setTimeout(() => {
+      intro.classList.add("intro-exit-cards");
+    }, 600); // 중앙 컨텐츠 fade-out 시간보다 살짝 뒤
+
+    // 3단계: 전체 애니메이션 끝난 후 페이지 이동
+    setTimeout(() => {
+      window.location.href = "collect-name.html";
+    }, 1600); // 카드 날리는 시간까지 고려한 값
+  });
+</script>
+
+
+</body>
+</html>

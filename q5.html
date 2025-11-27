@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Q5 – 소비/저축 가치 테스트</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/q.css" />
+</head>
+<body>
+  <div class="q-wrap">
+    <div class="q-progress">5 / 5</div>
+
+      <img 
+  src="assets/q5.png" 
+  alt="Q5 Illustration" 
+  class="q-illust" 
+  data-rotate="-3"
+/>
+
+    <h2 class="q-title typing" data-text="통장 잔고가 예상보다 빠르게 줄고 있다.<br>그럴 때 나는?"></h2>
+
+    <div class="q-options">
+      <button class="q-btn" data-score="economic">“지출 분석하고 고정비부터 점검해야겠다.”</button>
+      <button class="q-btn" data-score="relax">“조금 덜 모여도 괜찮아, 내가 만족했다면.”</button>
+      <button class="q-btn" data-score="mind">“내가 흔들리면 주변도 불안하잖아. 다시 정리해보자.”</button>
+    </div>
+  </div>
+
+  <script>
+    const optionButtons = document.querySelectorAll(".q-btn");
+
+    optionButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.classList.add("selected");
+        localStorage.setItem("q5", btn.dataset.score);
+
+        setTimeout(() => {
+          window.location.href = "result-loading.html"; // go to loading page first
+        }, 300);
+      });
+    });
+
+        window.addEventListener("DOMContentLoaded", () => {
+  const illust = document.querySelector(".q-illust");
+  const rotation = illust.dataset.rotate || "0";
+  illust.style.setProperty("--rotate", rotation + "deg");
+  requestAnimationFrame(() => {
+    illust.classList.add("active");
+  });
+
+  const title = document.querySelector(".q-title.typing");
+  const fullText = title.dataset.text;
+  let idx = 0;
+  let displayText = "";
+
+  title.innerHTML = "";
+  title.style.visibility = "visible";
+
+
+// 질문 타이핑 효과
+function typeNext() {
+  if (idx < fullText.length) {
+    displayText += fullText[idx];
+    title.innerHTML = displayText;
+    idx++;
+    setTimeout(typeNext, 60);
+  } else {
+    // 🎯 선택지 등장 트리거
+    document.querySelector(".q-options").classList.add("show");
+  }
+}
+
+
+  typeNext();
+});
+  </script>
+</body>
+</html>

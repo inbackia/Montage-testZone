@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Montage – Practical Realist</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/result-type1.css" />
+</head>
+<body>
+  <div class="receipt-page">
+    <div class="receipt-anim-wrapper">
+      <div class="mask-cover"></div>
+      <div class="receipt-mask"></div>
+
+      <div class="receipt-card animated">
+        <header class="receipt-header">
+          <img src="assets/logo-dark.svg" alt="Montage" class="logo" />
+          <strong class="user-name">익명 참여자</strong>
+        </header>
+
+        <div class="avatar-wrap">
+          <img src="assets/avatar-placeholder.png" alt="avatar" class="avatar-img" />
+        </div>
+
+        <section class="type-section">
+          <h1 class="type-en">Practical Realist</h1>
+          <p class="type-kr">계획형 현실주의자</p>
+        </section>
+
+        <div class="dotted-divider"></div>
+
+          <!-- 설명 영역 -->
+          <section class="desc-section">
+            <p class="desc">
+              현실적인 판단력과 꼼꼼한 계획으로 삶의 균형을<br />
+              지키는 당신은, 목표를 향해 한 걸음씩 나아가는
+              <span class="hl">안정형 저축가</span>
+              입니다.
+            </p>
+            <p class="desc">
+              당장의 만족보다 미래의
+              <span class="hl">자립과 확실한 성취</span>
+              를<br />
+              중요하게 생각하죠. 계획을 세우고 실천하는 과정에서
+              가장 큰 안도감을 느끼며,
+              <span class="hl">‘오늘의 선택이</span><span class="hl">내일의 안정으로 이어진다’</span>
+              는 믿음으로 움직입니다.
+            </p>
+          </section>
+
+
+        <div class="dotted-divider"></div>
+
+        <section class="score-section">
+          <p class="score-title">나의 소비/저축 가치 유형 점수는?</p>
+          <div class="score-row">
+            <div class="score-item"><span class="label">경제적</span><span class="value">100%</span></div>
+            <div class="score-item"><span class="label">유교적</span><span class="value">0%</span></div>
+            <div class="score-item"><span class="label">정신적</span><span class="value">0%</span></div>
+          </div>
+        </section>
+
+        <div class="solid-divider"></div>
+
+        <footer class="footer">
+          <img src="assets/qr-placeholder.png" alt="QR" class="qr-img" />
+          <p class="footer-main">Today’s spend,<br />tomorrow’s vision</p>
+          <p class="footer-sub">Thanks for Testing</p>
+        </footer>
+      </div>
+    </div>
+
+    <div class="print-ui hide">
+      <button class="print-btn" onclick="window.print()">출력하기</button>
+      <p class="print-msg">출력 후 <strong>Experience Zone</strong> 에서 <br>나의 유형 굿즈를 받아가세요</p>
+      <button class="home-btn" onclick="clearSessionData(); window.location.href='intro.html'">테스트 마치기</button>
+    </div>
+  </div>
+
+  <script>
+      window.addEventListener("DOMContentLoaded", () => {
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+      const nameEl = document.querySelector(".user-name");
+      if (nameEl) {
+        nameEl.textContent = savedName;
+      }
+    }
+  });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const printUI = document.querySelector('.print-ui');
+      setTimeout(() => {
+        printUI.classList.remove('hide');
+      }, 1800);
+    });
+
+
+    const total = 5;
+
+  const scores = {
+    economic: 0,
+    mind: 0,
+    relax: 0
+  };
+
+  for (let i = 1; i <= 5; i++) {
+    const answer = localStorage.getItem(`q${i}`);
+    if (answer && scores.hasOwnProperty(answer)) {
+      scores[answer]++;
+    }
+  }
+
+  // 각 점수 퍼센트 계산
+  const economicPercent = Math.round((scores.economic / total) * 100);
+  const mindPercent = Math.round((scores.mind / total) * 100);
+  const relaxPercent = Math.round((scores.relax / total) * 100);
+
+  // HTML에 반영
+  document.querySelector('.score-item:nth-child(1) .value').textContent = `${economicPercent}%`;
+  document.querySelector('.score-item:nth-child(2) .value').textContent = `${mindPercent}%`;
+  document.querySelector('.score-item:nth-child(3) .value').textContent = `${relaxPercent}%`;
+
+
+    const avatarImg = document.querySelector('.avatar-img');
+  const photoData = localStorage.getItem("userPhoto");
+  if (photoData) {
+    avatarImg.src = photoData;
+  }
+
+// 초기화 함수
+function clearSessionData() {
+localStorage.removeItem("userName");
+localStorage.removeItem("userPhoto");
+for (let i = 1; i <= 5; i++) {
+localStorage.removeItem("q" + i);
+}
+}
+
+  </script>
+</body>
+</html>

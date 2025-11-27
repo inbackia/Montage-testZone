@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Montage – 이름 입력</title>
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+
+  <!-- Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- collect-name 전용 CSS -->
+  <link rel="stylesheet" href="styles/collect-name.css" />
+</head>
+<body>
+  <div class="cn-page">
+    <div class="cn-wrap">
+      <!-- 1. 타이틀 -->
+      <h1 class="cn-title">이름이 무엇인가요?</h1>
+
+      <!-- 2. 인풋 영역 -->
+      <div class="cn-input-block">
+        <input
+          id="nameInput"
+          class="cn-input"
+          type="text"
+          maxlength="12"
+          placeholder="이름 및 닉네임을 작성해주세요"
+          autocomplete="off"
+        />
+        <div class="cn-helper-row">
+          <span class="cn-helper-text">최대 12자까지 입력 가능합니다.</span>
+          <span class="cn-counter">
+            <span id="nameCount">0</span>/12
+          </span>
+        </div>
+      </div>
+
+      <!-- 3. 버튼 -->
+      <button id="nextBtn" class="cn-button" disabled>
+        다음으로
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrap = document.querySelector(".cn-wrap");
+      const input = document.getElementById("nameInput");
+      const nextBtn = document.getElementById("nextBtn");
+      const countEl = document.getElementById("nameCount");
+
+      // 🔹 1) 페이지 들어올 때 순서대로 자연스럽게 등장
+      // 약간의 지연 후 .cn-show 클래스 추가 → CSS transition 발동
+      setTimeout(() => {
+        wrap.classList.add("cn-show");
+      }, 80);
+
+      // 🔹 2) 인풋 글자수 제한 & 버튼 활성화
+      const MAX_LEN = 12;
+
+      function updateState() {
+        let value = input.value || "";
+
+        // 12자 초과 입력되면 잘라주기 (붙여넣기 대비)
+        if (value.length > MAX_LEN) {
+          value = value.slice(0, MAX_LEN);
+          input.value = value;
+        }
+
+        countEl.textContent = value.length;
+
+        // 글자가 1자 이상일 때만 "다음으로" 활성화
+        if (value.trim().length > 0) {
+          nextBtn.disabled = false;
+        } else {
+          nextBtn.disabled = true;
+        }
+      }
+
+      input.addEventListener("input", updateState);
+      updateState(); // 초기 상태 반영
+
+      nextBtn.addEventListener("click", () => {
+  const name = input.value.trim();
+
+  if (name.length > 0) {
+    localStorage.setItem("userName", name);  // 🔥 이름 저장
+  }
+
+  window.location.href = "photo.html";        // 다음 페이지 이동
+});
+
+    });
+  </script>
+</body>
+</html>
