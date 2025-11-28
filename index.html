@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="intro.css" />
+  <link rel="stylesheet" href="styles/intro.css" />
 </head>
 
 <body>
@@ -40,6 +40,7 @@
               우리는 매일 돈을 쓰고, 또 모으며<br>
               자신만의 방식으로 삶의 균형을 만들어갑니다.
             </div>
+            <!-- <br> -->
             <div class="para2">
               소비와 저축은 단순한 숫자가 아니라<br>
               당신이 중요하게 여기는 ‘가치’의 표현이에요.<br>
@@ -59,23 +60,29 @@
   </div>
 
   <!-- 전환 애니메이션 스크립트 -->
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const intro = document.querySelector(".intro");
+<script>
+  const startBtn = document.getElementById("startBtn");
+  const intro = document.querySelector(".intro");
 
-    startBtn.addEventListener("click", () => {
-      // 중복 클릭 방지
-      startBtn.style.pointerEvents = "none";
+  startBtn.addEventListener("click", () => {
+    // 중복 클릭 방지
+    startBtn.style.pointerEvents = "none";
 
-      // 퇴장 애니메이션 시작
-      intro.classList.add("intro-exit");
+    // 1단계: 중앙 컨텐츠 먼저 사라지기
+    intro.classList.add("intro-exit-content");
 
-      // 페이지 이동
-      setTimeout(() => {
-        window.location.href = "collect-name.html";
-      }, 900);
-    });
-  </script>
+    // 2단계: 조금 있다가 카드들 날리기
+    setTimeout(() => {
+      intro.classList.add("intro-exit-cards");
+    }, 600); // 중앙 컨텐츠 fade-out 시간보다 살짝 뒤
+
+    // 3단계: 전체 애니메이션 끝난 후 페이지 이동
+    setTimeout(() => {
+      window.location.href = "collect-name.html";
+    }, 1600); // 카드 날리는 시간까지 고려한 값
+  });
+</script>
+
 
 </body>
 </html>
