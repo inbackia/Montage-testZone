@@ -1,0 +1,131 @@
+/* 전체 페이지 래퍼 */
+body {
+  margin: 0;
+  background: #f1f1f1;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+}
+
+.cn-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 중앙 박스 */
+.cn-wrap {
+  width: 26rem;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  text-align: center;
+}
+
+/* 1) 타이틀, 인풋, 버튼에 공통으로 "초기 상태" 지정
+   - 처음에는 살짝 아래(+30px)에 있고 투명
+   - .cn-show가 붙으면 위로(-30px이 아니라 0까지 올라온 느낌) 올라오면서 보이기 */
+.cn-title,
+.cn-input-block,
+.cn-button {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* 타이틀 */
+.cn-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #40444c;
+  margin: 0 0 0.5rem 0;
+}
+
+/* 인풋 블록 */
+.cn-input-block {
+  width: 100%;
+}
+
+/* 인풋 */
+.cn-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #cfcfcf;
+  background: #ffffff;
+
+  font-size: 1.2rem;
+  font-family: inherit;
+  text-align: center;
+
+  outline: none;
+  box-sizing: border-box;
+
+  height: 3.4rem;
+  line-height: 1;
+}
+
+.cn-input::placeholder {
+  color: #bbbbbb;
+  line-height: 1;
+}
+
+/* 헬퍼 / 카운터 */
+.cn-helper-row {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #9b9b9b;
+}
+
+.cn-counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 버튼 */
+.cn-button {
+  margin-top: 1rem;
+  width: 10.5rem;
+  padding: 1rem 2.8rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  background: #33c37e;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-family: "Pretendard";
+}
+
+.cn-button:disabled {
+  background: #d0d0d0;
+  cursor: default;
+}
+
+/* 🔥 등장 애니메이션: .cn-show가 붙으면 순서대로 올라오면서 나타나기 */
+
+/* 1. 타이틀 */
+.cn-wrap.cn-show .cn-title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+/* 2. 인풋 영역 */
+.cn-wrap.cn-show .cn-input-block {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
+}
+
+/* 3. 버튼 */
+.cn-wrap.cn-show .cn-button {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.8s;
+}

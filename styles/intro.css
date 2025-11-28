@@ -1,0 +1,237 @@
+:root {
+  --color-darkgray: #afafaf;
+  --color-darkslategray: #40444c;
+  --color-mediumseagreen: #33c37e;
+  --color-white: #fff;
+  --color-whitesmoke: #f1f1f1;
+
+  --br-4: 4px;
+
+  --font-montserrat: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+
+  --fs-18: 1.125rem;
+  --fs-20: 1.25rem;
+}
+
+body {
+  margin: 0;
+}
+
+/* ───────── 배경 영역 ───────── */
+
+.intro {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: linear-gradient(116.82deg, var(--color-whitesmoke), #f3f3f3);
+  overflow: hidden;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-mediumseagreen);
+  font-family: var(--font-montserrat);
+}
+
+/* 뒤 카드 3장 */
+.intro-item,
+.intro-child,
+.intro-inner {
+  position: absolute;
+  background-color: var(--color-whitesmoke);
+  border: 3px solid var(--color-white);
+  border-radius: var(--br-4);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
+}
+
+/* 위쪽 큰 카드 */
+.intro-item {
+  top: -40rem;
+  /* right: -10rem; */
+  width: 72rem;
+  height: 45rem;
+  transform: rotate(15deg);
+}
+
+/* 왼쪽 아래 카드 */
+.intro-inner {
+  bottom: -10rem;
+  left: -6rem;
+  width: 32rem;
+  height: 20rem;
+  transform: rotate(-10deg);
+}
+
+/* 오른쪽 아래 카드 */
+.intro-child {
+  bottom: -16rem;
+  right: -10rem;
+  width: 46rem;
+  height: 30rem;
+  transform: rotate(9deg);
+}
+
+/* ───────── 중앙 콘텐츠 기둥 ───────── */
+
+/* 📌 Figma의 세로 기둥 하나라고 생각하면 됨 */
+.wrap {
+  position: relative;
+  width: 34rem;          /* 기둥 폭 (필요하면 숫자만 조절) */
+  max-width: 90vw;
+  margin: 0 auto;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  /* 기둥 전체를 화면 가운데에 두고 */
+
+  /* 안쪽에서 상/하 여백은 패딩으로 조절 */
+  /* padding-top: 4rem; */
+  /* padding-bottom: 4rem; */
+
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* 로고는 기둥의 제일 위 근처 */
+.brand-logo-icon {
+  width: 8.5rem;
+  margin-bottom: 8rem;   /* 로고와 타이틀 사이 간격 */
+}
+
+/* 가운데(타이틀+문단+버튼) 묶음 */
+.middle-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* 타이틀+문단 묶음 */
+.title-papra-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* 제목 영역 – 기둥 폭과 맞춤 */
+.title-wrap {
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* 영문 서브 타이틀 */
+.introtitleen {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: var(--color-mediumseagreen);
+}
+
+/* 한글 메인 타이틀 */
+.introtitle {
+  font-size: 2.5rem;      /* 피그마 44px 근사치 */
+  line-height: 1.4;
+  color: var(--color-darkslategray);
+  font-weight: 700;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  white-space: nowrap;    /* 🔥 한 줄 고정 */
+  text-align: center;
+}
+
+/* 본문 영역 */
+.para-wrap {
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+
+  font-size: var(--fs-18);
+  color: var(--color-darkslategray);
+  text-align: center;
+}
+
+.para1,
+.para2 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.7;   /* 피그마 느낌의 행간 */
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+}
+
+/* 버튼 */
+.start-btn {
+  border-radius: 999px;
+  background-color: var(--color-mediumseagreen);
+  padding: 1rem 2.8rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  text-align: center;
+  font-size: var(--fs-20);
+  color: var(--color-white);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.start-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.btn-text {
+  line-height: 1.5;
+}
+
+/* 하단 슬로건 – 항상 기둥의 아래쪽 */
+.bottom-brandbottom {
+  margin-top: 8rem;     /* 버튼 아래와 거리 */
+  font-size: var(--fs-20);
+  line-height: 1.3;
+  color: var(--color-darkgray);
+  font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+}
+
+/* ───────── 전환 애니메이션 ───────── */
+
+/* 1단계: 중앙 기둥 위로 살짝 올라가며 사라짐 */
+.intro-exit-content .wrap {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+/* 2단계: 카드들이 회전하면서 화면 밖으로 */
+.intro-exit-cards .intro-item {
+  transform: rotate(25deg) translate(-140%, -60%);
+  opacity: 0;
+}
+
+.intro-exit-cards .intro-child {
+  transform: rotate(20deg) translate(160%, 80%);
+  opacity: 0;
+}
+
+.intro-exit-cards .intro-inner {
+  transform: rotate(-25deg) translate(-70%, 150%);
+  opacity: 0;
+}

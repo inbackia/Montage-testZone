@@ -1,0 +1,37 @@
+/* 공통 리셋 & 기본 설정 */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  line-height: normal;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+}
+
+/* 피그마에서 가져온 공통 변수들 */
+:root {
+  /* Color */
+  --color-darkgray: #afafaf;
+  --color-darkslategray: #40444c;
+  --color-mediumseagreen: #33c37e;
+  --color-white: #fff;
+  --color-whitesmoke: #f1f1f1;
+
+  /* BorderRadius */
+  --br-4: 4px;
+
+  /* Font */
+  --font-montserrat: "Montserrat", system-ui, -apple-system, sans-serif;
+
+  /* FontSize */
+  --fs-18: 1.125rem; /* 18px */
+  --fs-20: 1.25rem; /* 20px */
+}
